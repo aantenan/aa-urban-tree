@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "software-factory": {
+      "type": "http",
+      "url": "https://api.factory.8090.dev/mcp/",
+      "headers": {
+        "X-API-Key": "sf-hjN9ToYPP2r99rsim2jiX9gkE0ub9gNR"
+      }
+    }
+  }
+}
