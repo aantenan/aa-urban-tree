@@ -6,6 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi",
     "uvicorn[standard]",
+    "python-dotenv",
     "shared-models",
     "database",
     "authentication",
@@ -17,6 +18,7 @@ dependencies = [
 dev = [
     "pytest",
     "httpx",
+    "mypy",
 ]
 
 [tool.uv.sources]

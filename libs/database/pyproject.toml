@@ -3,7 +3,13 @@ name = "database"
 version = "0.1.0"
 description = "Database connection and ORM"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "peewee>=3.17",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["database*"]
+
+[project.optional-dependencies]
+dev = ["pytest"]

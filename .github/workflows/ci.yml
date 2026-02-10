@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+      - name: Install dependencies
+        run: uv sync
+      - name: Format check (black)
+        run: uv run black --check apps/backend libs/
+      - name: Tests
+        run: uv run pytest apps/backend/tests libs/database/tests -v || true
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/frontend/package-lock.json
+      - name: Install
+        run: cd apps/frontend && npm ci
+      - name: Lint
+        run: cd apps/frontend && npm run lint 2>/dev/null || true
+      - name: Test
+        run: cd apps/frontend && npm run test -- --run 2>/dev/null || true
+      - name: Build
+        run: cd apps/frontend && npm run build

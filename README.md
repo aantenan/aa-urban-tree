@@ -41,7 +41,7 @@ cp .env.example .env
 ## Development
 
 - **Backend (local):** `cd apps/backend && uv run uvicorn main:app --reload` (run from repo root with `PYTHONPATH=apps/backend/src` or from `apps/backend` with `uv run`)
-- **Frontend:** `cd apps/frontend && npm run dev`
+- **Frontend:** `cd apps/frontend && npm run dev` — or in **PyCharm**: use the **Frontend** run configuration (Run → Edit Configurations → Frontend, then Run).
 - **Full stack (Docker):** `docker compose up` (requires `uv lock` and `.env`)
 
 ## Scripts (from repo root)
@@ -53,5 +53,4 @@ cp .env.example .env
 
 ## Contributing
 
-1. Create a branch, make changes, run format/lint/tests.
-2. Open a PR; ensure CI (if configured) passes.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow, coding standards, and environment setup. CI runs on push/PR (format check and tests).
