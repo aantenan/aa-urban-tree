@@ -1,0 +1,27 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Urban tree grant application backend API"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "shared-models",
+    "database",
+    "authentication",
+    "storage",
+    "email",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "httpx",
+]
+
+[tool.uv.sources]
+shared-models = { workspace = true }
+database = { workspace = true }
+authentication = { workspace = true }
+storage = { workspace = true }
+email = { workspace = true }

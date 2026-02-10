@@ -1,0 +1,9 @@
+[project]
+name = "email"
+version = "0.1.0"
+description = "Email sending with template support"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]

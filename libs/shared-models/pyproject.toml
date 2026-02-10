@@ -1,0 +1,11 @@
+[project]
+name = "shared-models"
+version = "0.1.0"
+description = "Shared Pydantic models and schemas"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

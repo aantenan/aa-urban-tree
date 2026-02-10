@@ -1,0 +1,27 @@
+[project]
+name = "aa-urban-tree"
+version = "0.1.0"
+description = "Urban tree grant application monorepo"
+readme = "README.md"
+requires-python = ">=3.11"
+
+[tool.uv.workspace]
+members = [
+    "apps/backend",
+    "libs/shared-models",
+    "libs/database",
+    "libs/authentication",
+    "libs/storage",
+    "libs/email",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.pylint.main]
+ignore = ["venv", ".venv", "node_modules"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
