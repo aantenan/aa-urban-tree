@@ -9,7 +9,7 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { setToken } = useAuth();
+  const { setToken, setUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
@@ -25,6 +25,7 @@ export function LoginPage() {
       });
       if (res.token) {
         setToken(res.token);
+        if (res.user) setUser(res.user);
         navigate(from, { replace: true });
       }
     } catch (err) {

@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import API_V1_PREFIX, CORS_ORIGINS, DEBUG
-from routes import health
+from routes import auth, health
 from utils.errors import error_handler
 from utils.logging import get_logger, setup_logging
 
@@ -52,6 +52,7 @@ app.add_exception_handler(Exception, error_handler)
 # Mount routes: /api/health and /api/v1/...
 app.include_router(health.router, prefix="/api")
 app.include_router(health.router, prefix=API_V1_PREFIX)
+app.include_router(auth.router, prefix=API_V1_PREFIX)
 
 
 def main() -> None:
