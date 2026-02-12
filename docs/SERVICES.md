@@ -61,6 +61,7 @@ All JSON responses use a consistent shape:
 
 ## Unit Testing
 
-- Mock dependencies by passing them into the service constructor.
+- **Mock factories**: Use `utils.testing.MockEmailService`, `MockStorageBackend`, `MockMalwareScanner`, or the factory helpers `mock_email_service()`, `mock_storage_backend()`, `mock_malware_scanner()`. Pass these into service constructors in tests.
 - Use `utils.responses.api_response` / `success_response` / `error_response` in tests to assert response shape.
+- See `services/example_service.py` and `tests/test_example_service.py` for a full example; see also [SERVICE_FRAMEWORK.md](SERVICE_FRAMEWORK.md).
 - For route-level tests, override `app.dependency_overrides` or the container if you need to inject a test double.
