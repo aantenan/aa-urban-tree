@@ -1,3 +1,3 @@
-from authentication.interfaces.auth_provider import AuthProvider
+from authentication.interfaces.auth_provider import AuthProvider, UserRepository
 
-__all__ = ["AuthProvider"]
+__all__ = ["AuthProvider", "UserRepository"]

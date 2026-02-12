@@ -2,11 +2,17 @@
 
 Pluggable auth (mock for dev, JWT for prod), plus shared utilities for password, JWT, session, lockout, and route protection.
 
-## Provider
+## Provider interface
 
-- `get_provider()` returns the configured provider (`AUTH_PROVIDER=mock|jwt`).
-- **Mock**: configurable fake users via `MOCK_AUTH_USERS` (see backend docs).
-- **JWT**: implement `JwtAuthProvider` using `authentication.utils.jwt` and your user store.
+`AuthProvider` defines: `authenticate`, `verify`, `register`, `logout`, `refresh_token`, `reset_password`, `lock_account`, `unlock_account`. JWT payload includes user id, email, and role.
+
+- **get_provider(user_repository=None)** returns the configured provider (`AUTH_PROVIDER=mock|jwt`). For JWT you must pass a `UserRepository` (see below); otherwise a stub is returned.
+- **MockAuthProvider**: in-memory users (configurable via `MOCK_AUTH_USERS`), tokens, lockout; supports all interface methods.
+- **JwtAuthProvider(user_repository)**: full implementation with signing, validation, refresh, lockout, password rules; requires a `UserRepository` implementation (e.g. backend DB adapter).
+
+## UserRepository (for JWT)
+
+Protocol used by `JwtAuthProvider`: `get_by_email`, `get_by_id`, `create_user`, `update_password`, `set_account_status`, `record_login_attempt`, `create_password_reset`, `get_password_reset`, `mark_password_reset_used`, `email_exists`. Implement with your DB (e.g. Peewee models) and pass to `get_provider(user_repository=...)`.
 
 ## Utilities
 
