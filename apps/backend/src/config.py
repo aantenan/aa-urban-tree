@@ -30,3 +30,7 @@ LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
 PROGRAM_DATA_PATH: str = os.getenv("PROGRAM_DATA_PATH", "config/program_data.json")
 STATIC_RESOURCES_PATH: str = os.getenv("STATIC_RESOURCES_PATH", "config/static_resources.json")
 PROGRAM_CONFIG_CACHE_MAX_AGE: int = int(os.getenv("PROGRAM_CONFIG_CACHE_MAX_AGE", "300"))
+
+# Service framework (file upload, malware scan)
+MALWARE_SCAN_DISABLED: bool = os.getenv("MALWARE_SCAN_DISABLED", "true").lower() in ("true", "1", "yes")
+FILE_UPLOAD_MAX_MB: int = int(os.getenv("FILE_UPLOAD_MAX_MB", "10"))
