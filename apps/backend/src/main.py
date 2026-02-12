@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 
 from config import API_V1_PREFIX, CORS_ORIGINS, DEBUG
-from routes import applications, auth, health, public
+from routes import applications, auth, counties, health, public
 from utils.errors import error_handler, validation_exception_handler
 from utils.logging import get_logger, setup_logging
 
@@ -23,8 +23,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     try:
         from database.connection import init_db
         from database.migrations.runner import run_migrations
+        from utils.seed_counties import seed_counties
         init_db()
         run_migrations()
+        seed_counties()
     except Exception as e:
         logger.warning("Database init skipped: %s", e)
     try:
@@ -62,6 +64,7 @@ app.include_router(health.router, prefix="/api")
 app.include_router(health.router, prefix=API_V1_PREFIX)
 app.include_router(auth.router, prefix=API_V1_PREFIX)
 app.include_router(applications.router, prefix=API_V1_PREFIX)
+app.include_router(counties.router, prefix=API_V1_PREFIX)
 app.include_router(public.router, prefix="/api")
 
 
