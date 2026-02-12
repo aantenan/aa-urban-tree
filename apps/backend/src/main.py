@@ -5,9 +5,11 @@ from typing import AsyncGenerator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from fastapi.exceptions import RequestValidationError
+
 from config import API_V1_PREFIX, CORS_ORIGINS, DEBUG
 from routes import auth, health, public
-from utils.errors import error_handler
+from utils.errors import error_handler, validation_exception_handler
 from utils.logging import get_logger, setup_logging
 
 logger = get_logger(__name__)
@@ -25,6 +27,11 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         run_migrations()
     except Exception as e:
         logger.warning("Database init skipped: %s", e)
+    try:
+        from core.container import init_container
+        init_container()
+    except Exception as e:
+        logger.warning("Service container init skipped: %s", e)
     yield
     logger.info("Application shutting down")
 
@@ -47,6 +54,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, error_handler)
 
 # Mount routes: /api/health and /api/v1/...
