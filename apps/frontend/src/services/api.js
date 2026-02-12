@@ -34,7 +34,8 @@ export async function apiJson(path, options = {}) {
   const res = await apiFetch(path, options);
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const err = new Error(data.detail || res.statusText || 'Request failed');
+    const msg = data?.message ?? data?.detail ?? res.statusText ?? 'Request failed';
+    const err = new Error(typeof msg === 'string' ? msg : 'Request failed');
     err.status = res.status;
     err.data = data;
     throw err;

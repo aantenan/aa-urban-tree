@@ -20,7 +20,11 @@ export function HomePage() {
           </button>
         </div>
       ) : (
-        <Link to="/login">Sign in</Link>
+        <>
+          <Link to="/login">Sign in</Link>
+          {' · '}
+          <Link to="/register">Create account</Link>
+        </>
       )}
     </div>
   );

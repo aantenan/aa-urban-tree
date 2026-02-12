@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 
 from config import API_V1_PREFIX, CORS_ORIGINS, DEBUG
-from routes import auth, health, public
+from routes import applications, auth, health, public
 from utils.errors import error_handler, validation_exception_handler
 from utils.logging import get_logger, setup_logging
 
@@ -61,6 +61,7 @@ app.add_exception_handler(Exception, error_handler)
 app.include_router(health.router, prefix="/api")
 app.include_router(health.router, prefix=API_V1_PREFIX)
 app.include_router(auth.router, prefix=API_V1_PREFIX)
+app.include_router(applications.router, prefix=API_V1_PREFIX)
 app.include_router(public.router, prefix="/api")
 
 

@@ -7,10 +7,9 @@
  * @returns {string} User-friendly message
  */
 export function getErrorMessage(err) {
-  if (err?.data?.detail) {
-    return typeof err.data.detail === 'string'
-      ? err.data.detail
-      : JSON.stringify(err.data.detail);
+  const msg = err?.data?.detail ?? err?.data?.message;
+  if (msg) {
+    return typeof msg === 'string' ? msg : JSON.stringify(msg);
   }
   if (err?.message) return err.message;
   if (err?.status === 401) return 'Please sign in again.';

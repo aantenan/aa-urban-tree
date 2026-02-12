@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getErrorMessage } from '../utils/errorHandler';
 import { apiJson } from '../services/api';
+import { Button, Form, Input } from '../components/ui';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
+  const successMessage = location.state?.message;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,43 +31,51 @@ export function LoginPage() {
         navigate(from, { replace: true });
       }
     } catch (err) {
-      setError(getErrorMessage(err));
+      // Security-conscious: same message for wrong email or wrong password
+      if (err?.status === 429) {
+        setError('Too many failed attempts. Your account is locked for 15 minutes. Try again later.');
+      } else {
+        setError(getErrorMessage(err) || 'Invalid email or password. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: 400, margin: '0 auto' }}>
+    <div className="container" style={{ paddingTop: '2rem', maxWidth: 420, margin: '0 auto' }}>
       <h2>Sign in</h2>
-      <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: 'crimson' }}>{error}</p>}
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ display: 'block', width: '100%' }}
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ display: 'block', width: '100%' }}
-          />
-        </div>
-        <button type="submit" disabled={loading}>
+      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+      {error && <p role="alert" style={{ color: 'crimson' }}>{error}</p>}
+      <Form onSubmit={handleSubmit}>
+        <Input
+          name="email"
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+        <Input
+          name="password"
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+        />
+        <Button type="submit" disabled={loading} style={{ marginTop: '1rem' }}>
           {loading ? 'Signing in…' : 'Sign in'}
-        </button>
-      </form>
+        </Button>
+      </Form>
+      <p style={{ marginTop: '1rem' }}>
+        <Link to="/forgot-password">Forgot password?</Link>
+      </p>
+      <p>
+        Don’t have an account? <Link to="/register">Create account</Link>
+      </p>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 import pytest
 
 from database.connection import database_proxy
-from database.models import User, PasswordReset, LoginAttempt
+from database.models import User, PasswordReset, LoginAttempt, Application
 
 
 @pytest.fixture(autouse=True)
@@ -12,7 +12,7 @@ def use_memory_db(monkeypatch: pytest.MonkeyPatch) -> None:
     conn._db = None
     db = conn.get_db()
     database_proxy.initialize(db)
-    db.create_tables([User, PasswordReset, LoginAttempt])
+    db.create_tables([User, PasswordReset, LoginAttempt, Application])
     yield
     database_proxy.initialize(None)
     db.close()
