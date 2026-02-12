@@ -1,0 +1,24 @@
+{
+  "title": "Urban Tree Grant Program",
+  "description": "Apply for grants to plant and maintain trees in urban areas. This program supports municipalities and community groups in expanding urban canopy.",
+  "eligibility": "Municipalities, non-profits, and community organizations within the service area.",
+  "deadline_info": "Applications are accepted on a rolling basis. Allow 4–6 weeks for review.",
+  "contact_email": "grants@example.com",
+  "contact_phone": null,
+  "resources": [
+    {
+      "id": "application_guidelines",
+      "label": "Application Guidelines",
+      "description": "PDF guide for applicants"
+    },
+    {
+      "id": "faq",
+      "label": "Frequently Asked Questions",
+      "description": "Common questions and answers"
+    }
+  ],
+  "metadata": {
+    "last_updated": null,
+    "version": "1.0"
+  }
+}

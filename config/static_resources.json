@@ -1,0 +1,7 @@
+{
+  "mappings": {
+    "application_guidelines": "public/guidelines/application-guidelines.pdf",
+    "faq": "public/guidelines/faq.pdf",
+    "template_application": "public/templates/application-template.pdf"
+  }
+}

@@ -9,6 +9,9 @@ export function HomePage() {
     <div style={{ padding: '2rem', maxWidth: 800, margin: '0 auto' }}>
       <h1>Urban Tree Grant Application</h1>
       <p>Apply for urban tree planting grants.</p>
+      <p>
+        <Link to="/listing">View program information and resources</Link>
+      </p>
       {isAuthenticated ? (
         <div>
           <Link to="/dashboard">Dashboard</Link>

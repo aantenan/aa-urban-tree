@@ -25,3 +25,8 @@ CORS_ORIGINS: list[str] = [
 
 # Logging
 LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
+
+# Public listing / program config (paths relative to repo root or absolute)
+PROGRAM_DATA_PATH: str = os.getenv("PROGRAM_DATA_PATH", "config/program_data.json")
+STATIC_RESOURCES_PATH: str = os.getenv("STATIC_RESOURCES_PATH", "config/static_resources.json")
+PROGRAM_CONFIG_CACHE_MAX_AGE: int = int(os.getenv("PROGRAM_CONFIG_CACHE_MAX_AGE", "300"))
