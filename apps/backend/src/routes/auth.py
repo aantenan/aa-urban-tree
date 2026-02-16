@@ -59,9 +59,9 @@ def register(body: RegisterRequest) -> AuthResponse:
 
 
 @router.post("/login", response_model=AuthResponse)
-def login(body: LoginRequest, request: Request | None = None) -> AuthResponse:
+def login(body: LoginRequest, request: Request) -> AuthResponse:
     """Authenticate; returns JWT and user. Uses DB+JWT when AUTH_PROVIDER=jwt, else mock provider."""
-    ip_address = request.client.host if request and request.client else None
+    ip_address = request.client.host if request.client else None
     if _use_jwt_backend():
         svc = _auth_service()
         try:

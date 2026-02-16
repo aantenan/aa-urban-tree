@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from authentication.middleware.deps import get_current_user
+from auth_deps import get_current_user
 from database.models import User
 from services.application_form_service import ApplicationFormService
 from services.contact_information_service import ContactInformationService

@@ -118,7 +118,7 @@ def api_client(auth_user_payload, memory_db, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
     user_id, payload = auth_user_payload
     from fastapi.testclient import TestClient
-    from authentication.middleware.deps import get_current_user
+    from auth_deps import get_current_user
 
     def mock_get_current_user():
         return payload
