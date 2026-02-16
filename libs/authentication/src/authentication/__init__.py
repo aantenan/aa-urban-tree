@@ -6,6 +6,9 @@ if TYPE_CHECKING:
     from authentication.interfaces.auth_provider import AuthProvider, UserRepository
 
 
+_mock_provider: "AuthProvider | None" = None
+
+
 def get_provider(user_repository: "UserRepository | None" = None) -> "AuthProvider":
     """Return the configured auth provider (AUTH_PROVIDER=mock|jwt). For jwt, pass user_repository."""
     kind = (os.getenv("AUTH_PROVIDER") or "mock").lower()
@@ -14,8 +17,11 @@ def get_provider(user_repository: "UserRepository | None" = None) -> "AuthProvid
         if user_repository is None:
             return _StubJwtProvider()
         return JwtAuthProvider(user_repository)
-    from authentication.implementations.mock_provider import MockAuthProvider
-    return MockAuthProvider()
+    global _mock_provider
+    if _mock_provider is None:
+        from authentication.implementations.mock_provider import MockAuthProvider
+        _mock_provider = MockAuthProvider()
+    return _mock_provider
 
 
 class _StubJwtProvider:
