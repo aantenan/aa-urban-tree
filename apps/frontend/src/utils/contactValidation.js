@@ -40,13 +40,13 @@ export function validateContactForm(values) {
   return errors;
 }
 
-/** Default empty contact form (snake_case, matches API). */
+/** Default empty contact form (snake_case, matches API). State default MD. */
 export const CONTACT_INITIAL = {
   organization_name: '',
   address_line1: '',
   address_line2: '',
   city: '',
-  state_code: '',
+  state_code: 'MD',
   zip_code: '',
   county: '',
   primary_contact_name: '',
