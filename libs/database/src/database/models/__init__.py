@@ -6,6 +6,9 @@ from database.models.login_attempt import LoginAttempt
 from database.models.application import Application
 from database.models.county import County
 from database.models.contact_information import ContactInformation
+from database.models.site_ownership import SiteOwnership
+from database.models.project_type import ProjectType
+from database.models.project_information import ProjectInformation
 
 __all__ = [
     "BaseModel",
@@ -15,4 +18,7 @@ __all__ = [
     "Application",
     "County",
     "ContactInformation",
+    "SiteOwnership",
+    "ProjectType",
+    "ProjectInformation",
 ]

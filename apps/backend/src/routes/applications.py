@@ -9,6 +9,7 @@ from authentication.middleware.deps import get_current_user
 from database.models import User
 from services.application_form_service import ApplicationFormService
 from services.contact_information_service import ContactInformationService
+from services.project_information_service import ProjectInformationService
 from utils.responses import error_response
 
 router = APIRouter(prefix="/applications", tags=["applications"])
@@ -36,6 +37,22 @@ class ContactInformationBody(BaseModel):
     alternate_contact_phone: str | None = None
 
 
+class ProjectInformationBody(BaseModel):
+    project_name: str | None = None
+    site_address_line1: str | None = None
+    site_address_line2: str | None = None
+    site_city: str | None = None
+    site_state_code: str | None = None
+    site_zip_code: str | None = None
+    site_ownership: str | None = None
+    project_type: str | None = None
+    acreage: float | None = None
+    tree_count: int | None = None
+    start_date: str | None = None
+    completion_date: str | None = None
+    description: str | None = None
+
+
 def _resolve_user_id(payload: dict) -> str | None:
     """Resolve user id from JWT payload: sub may be UUID (JWT) or email (mock)."""
     sub = payload.get("sub")
@@ -60,6 +77,10 @@ def _application_form_service() -> ApplicationFormService:
 
 def _contact_information_service() -> ContactInformationService:
     return ContactInformationService()
+
+
+def _project_information_service() -> ProjectInformationService:
+    return ProjectInformationService()
 
 
 def _user_or_401(user: dict):
@@ -176,6 +197,47 @@ async def put_contact_information(
         return err
     payload = body.model_dump(exclude_none=True)
     result = svc.put_contact(application_id, user_id, payload)
+    if not result.get("success"):
+        code = (result.get("data") or {}).get("code")
+        if code == "not_found":
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=result)
+        if code == "not_draft":
+            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=result)
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=result)
+    return JSONResponse(content=result)
+
+
+@router.get("/{application_id}/project-information")
+async def get_project_information(
+    application_id: str,
+    user: dict = Depends(get_current_user),
+    svc: ProjectInformationService = Depends(_project_information_service),
+):
+    """Get project information section for the application."""
+    user_id, err = _user_or_401(user)
+    if err is not None:
+        return err
+    result = svc.get_project(application_id, user_id)
+    if not result.get("success"):
+        if (result.get("data") or {}).get("code") == "not_found":
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=result)
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=result)
+    return JSONResponse(content=result)
+
+
+@router.put("/{application_id}/project-information")
+async def put_project_information(
+    application_id: str,
+    body: ProjectInformationBody,
+    user: dict = Depends(get_current_user),
+    svc: ProjectInformationService = Depends(_project_information_service),
+):
+    """Update project information (auto-save). Returns validation errors and section_complete."""
+    user_id, err = _user_or_401(user)
+    if err is not None:
+        return err
+    payload = body.model_dump(exclude_none=True)
+    result = svc.put_project(application_id, user_id, payload)
     if not result.get("success"):
         code = (result.get("data") or {}).get("code")
         if code == "not_found":
