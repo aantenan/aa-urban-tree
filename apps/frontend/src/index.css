@@ -172,3 +172,20 @@ body {
   z-index: 2000;
 }
 .session-timeout-warning__actions { display: flex; gap: 0.75rem; margin-top: 1rem; justify-content: flex-end; }
+
+/* Contact information section */
+.form-section { margin-bottom: 2rem; }
+.form-section__error { color: #c00; margin-bottom: 0.5rem; }
+.contact-section__grid { display: flex; flex-direction: column; gap: 1.5rem; }
+.contact-section__block { max-width: 480px; }
+.contact-section__subheading { font-size: 1rem; margin: 0 0 0.75rem; font-weight: 600; }
+.contact-section__row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 640px) {
+  .contact-section__row { grid-template-columns: 1fr; }
+}
+.input-group select.input-group__input { max-width: 100%; min-width: 0; }

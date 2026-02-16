@@ -40,6 +40,19 @@ export function validate(value, validators) {
  * Password complexity: at least 8 chars, uppercase, lowercase, number, special.
  * Returns { valid: boolean, message?: string, strength: 0-4 }.
  */
+/**
+ * Phone format: digits, spaces, dashes, parens; at least 10 digits (matches backend).
+ * @returns {string | null} Error message or null if valid/empty.
+ */
+export function phone(value) {
+  if (value == null || value === '') return null;
+  const s = String(value).trim();
+  if (!/^[\d\s\-\(\)\+\.]+$/.test(s)) return 'Enter a valid phone number';
+  const digits = s.replace(/\D/g, '');
+  if (digits.length < 10) return 'Phone number must have at least 10 digits';
+  return null;
+}
+
 export function passwordStrength(value) {
   if (value == null || value === '') {
     return { valid: false, strength: 0, message: 'Password is required' };
