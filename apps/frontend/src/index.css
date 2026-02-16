@@ -56,9 +56,11 @@ body {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  min-height: 56px;
+  gap: 0.5rem;
+  padding: 2px 1rem;
+  height: 96px;
+  min-height: 96px;
+  box-sizing: border-box;
 }
 
 .app-header__brand {
@@ -80,13 +82,11 @@ body {
 .app-header__logo {
   display: block;
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  width: 92px !important;
+  height: 92px !important;
+  min-width: 92px;
+  min-height: 92px;
   object-fit: contain;
-}
-
-.app-header__brand-text {
-  white-space: nowrap;
 }
 
 .app-header__nav {

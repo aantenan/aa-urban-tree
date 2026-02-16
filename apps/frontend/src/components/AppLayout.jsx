@@ -17,12 +17,11 @@ export function AppLayout() {
           <Link to="/" className="app-header__brand">
             <img
               src="/maryland-logo.svg"
-              alt=""
+              alt="Maryland"
               className="app-header__logo"
-              width="56"
-              height="56"
+              width="92"
+              height="92"
             />
-            <span className="app-header__brand-text">Maryland OneStop</span>
           </Link>
           <nav className="app-header__nav" aria-label="Main">
             <Link
