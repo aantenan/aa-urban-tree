@@ -29,10 +29,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             from utils.seed_counties import seed_counties
             from utils.seed_project_options import seed_project_options
             from utils.seed_budget_categories import seed_budget_categories
+            from utils.seed_users import seed_users
             run_migrations()
             seed_counties()
             seed_project_options()
             seed_budget_categories()
+            seed_users()
     except Exception as e:
         logger.warning("Database init skipped: %s", e)
     try:
