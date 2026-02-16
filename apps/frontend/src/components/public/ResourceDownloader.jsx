@@ -17,21 +17,21 @@ export function ResourceDownloader({ resources = [] }) {
   };
 
   return (
-    <section className="resource-downloads" aria-labelledby="resources-heading">
-      <h2 id="resources-heading">Resources</h2>
-      <ul>
+    <section className="resource-downloads content-card" aria-labelledby="resources-heading">
+      <h2 id="resources-heading" className="resource-downloads__title">Resources</h2>
+      <ul className="resource-downloads__list">
         {resources.map((r) => {
           const url = getDownloadUrl(r);
           return (
-            <li key={r.id}>
+            <li key={r.id} className="resource-downloads__item">
               {url ? (
-                <a href={url} download target="_blank" rel="noopener noreferrer">
+                <a href={url} download target="_blank" rel="noopener noreferrer" className="resource-downloads__link">
                   {r.label}
                 </a>
               ) : (
                 <span>{r.label}</span>
               )}
-              {r.description && <span className="resource-desc"> — {r.description}</span>}
+              {r.description && <span className="resource-downloads__desc"> — {r.description}</span>}
             </li>
           );
         })}

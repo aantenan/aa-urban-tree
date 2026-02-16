@@ -19,8 +19,8 @@ export function AppLayout() {
               src="/maryland-logo.svg"
               alt=""
               className="app-header__logo"
-              width="40"
-              height="40"
+              width="56"
+              height="56"
             />
             <span className="app-header__brand-text">Maryland OneStop</span>
           </Link>

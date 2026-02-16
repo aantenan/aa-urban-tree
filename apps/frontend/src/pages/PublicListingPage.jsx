@@ -28,15 +28,39 @@ export function PublicListingPage() {
     return () => { cancelled = true; };
   }, []);
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <p role="alert">Unable to load program information. Please try again later.</p>;
+  if (loading) {
+    return (
+      <div className="container">
+        <div className="content-card">
+          <LoadingSpinner />
+        </div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="container">
+        <div className="content-card">
+          <p role="alert" className="listing-page__error">Unable to load program information. Please try again later.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main id="public-listing" className="public-listing-page">
-      <ProgramInfoDisplay config={config} />
-      {config?.resources?.length > 0 && (
-        <ResourceDownloader resources={config.resources} />
-      )}
+      <div className="container">
+        <div className="listing-page__hero content-card">
+          <h1 className="listing-page__title">Program &amp; Resources</h1>
+          <p className="listing-page__lead">
+            Find program information, eligibility, deadlines, and resources for the Urban Tree Grant Program in one place.
+          </p>
+        </div>
+        <ProgramInfoDisplay config={config} />
+        {config?.resources?.length > 0 && (
+          <ResourceDownloader resources={config.resources} />
+        )}
+      </div>
     </main>
   );
 }

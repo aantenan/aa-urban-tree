@@ -15,25 +15,25 @@ export function ProgramInfoDisplay({ config }) {
   } = config;
 
   return (
-    <article className="program-info" aria-label="Program information">
-      <h1>{title}</h1>
-      {description && <p className="program-description">{description}</p>}
+    <article className="program-info content-card" aria-label="Program information">
+      <h2 className="program-info__title">{title}</h2>
+      {description && <p className="program-info__description">{description}</p>}
       {eligibility && (
-        <section aria-labelledby="eligibility-heading">
-          <h2 id="eligibility-heading">Eligibility</h2>
-          <p>{eligibility}</p>
+        <section className="program-info__section" aria-labelledby="eligibility-heading">
+          <h3 id="eligibility-heading" className="program-info__heading">Eligibility</h3>
+          <p className="program-info__text">{eligibility}</p>
         </section>
       )}
       {deadline_info && (
-        <section aria-labelledby="deadline-heading">
-          <h2 id="deadline-heading">Deadlines</h2>
-          <p>{deadline_info}</p>
+        <section className="program-info__section" aria-labelledby="deadline-heading">
+          <h3 id="deadline-heading" className="program-info__heading">Deadlines</h3>
+          <p className="program-info__text">{deadline_info}</p>
         </section>
       )}
       {(contact_email || contact_phone) && (
-        <section aria-labelledby="contact-heading">
-          <h2 id="contact-heading">Contact</h2>
-          <ul>
+        <section className="program-info__section" aria-labelledby="contact-heading">
+          <h3 id="contact-heading" className="program-info__heading">Contact</h3>
+          <ul className="program-info__list">
             {contact_email && (
               <li>
                 <a href={`mailto:${contact_email}`}>{contact_email}</a>
