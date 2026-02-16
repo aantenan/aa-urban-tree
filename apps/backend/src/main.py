@@ -18,19 +18,21 @@ logger = get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Startup/shutdown lifecycle."""
+    import os
     setup_logging()
     logger.info("Application starting")
     try:
         from database.connection import init_db
-        from database.migrations.runner import run_migrations
-        from utils.seed_counties import seed_counties
-        from utils.seed_project_options import seed_project_options
-        from utils.seed_budget_categories import seed_budget_categories
         init_db()
-        run_migrations()
-        seed_counties()
-        seed_project_options()
-        seed_budget_categories()
+        if not os.getenv("TESTING"):
+            from database.migrations.runner import run_migrations
+            from utils.seed_counties import seed_counties
+            from utils.seed_project_options import seed_project_options
+            from utils.seed_budget_categories import seed_budget_categories
+            run_migrations()
+            seed_counties()
+            seed_project_options()
+            seed_budget_categories()
     except Exception as e:
         logger.warning("Database init skipped: %s", e)
     try:
