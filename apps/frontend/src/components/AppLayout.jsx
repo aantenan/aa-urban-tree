@@ -15,7 +15,14 @@ export function AppLayout() {
       <header className="app-header">
         <div className="app-header__inner container">
           <Link to="/" className="app-header__brand">
-            Urban Tree Grant Program
+            <img
+              src="/maryland-logo.svg"
+              alt=""
+              className="app-header__logo"
+              width="40"
+              height="40"
+            />
+            <span className="app-header__brand-text">Maryland OneStop</span>
           </Link>
           <nav className="app-header__nav" aria-label="Main">
             <Link
@@ -60,7 +67,7 @@ export function AppLayout() {
             <a href="#accessibility" className="app-footer__link">Accessibility</a>
           </nav>
           <p className="app-footer__copy">
-            © {new Date().getFullYear()} Urban Tree Grant Program
+            © {new Date().getFullYear()} Maryland OneStop
           </p>
         </div>
       </footer>
