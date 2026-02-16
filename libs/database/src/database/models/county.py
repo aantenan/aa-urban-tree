@@ -12,4 +12,4 @@ class County(BaseModel):
 
     class Meta:
         table_name = "counties"
-        indexes = (("name", "state_code"),)
+        indexes = ((("name", "state_code"), False),)
