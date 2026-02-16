@@ -17,11 +17,26 @@ def get_database_url() -> str:
     return os.getenv("DATABASE_URL", "sqlite:///./local.db")
 
 
+def _ensure_sqlite_directory(url: str) -> None:
+    """Create parent directory for SQLite file if needed; no-op for in-memory or non-sqlite."""
+    if not url or not url.strip().lower().startswith("sqlite"):
+        return
+    # sqlite:///path or sqlite:///./path or sqlite:////absolute/path
+    path = url.split("sqlite:///", 1)[-1].strip()
+    if not path or path == ":memory:":
+        return
+    path = os.path.normpath(path)
+    parent = os.path.dirname(path)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent, exist_ok=True)
+
+
 def get_db() -> Database:
     """Return the global database instance; initializes on first call."""
     global _db
     if _db is None:
         url = get_database_url()
+        _ensure_sqlite_directory(url)
         _db = connect(url)
     return _db
 
