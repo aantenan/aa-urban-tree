@@ -18,6 +18,7 @@ os.chdir(src)
 
 
 def main() -> None:
+    import config  # noqa: F401 - load .env (DATABASE_URL, etc.) before DB access
     from database.connection import init_db
     from database.migrations.runner import run_migrations
     from utils.seed_counties import seed_counties

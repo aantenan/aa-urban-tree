@@ -14,6 +14,7 @@ htmlcov/
 .eggs/
 dist/
 build/
+local-db/
 
 # Node
 node_modules/

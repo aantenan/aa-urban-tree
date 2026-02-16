@@ -32,6 +32,13 @@ def get_current_user(
     else:
         from authentication import get_provider
         payload = get_provider().verify(token)
+        # If mock verify missed (e.g. new process after reload), try JWT when token looks like one
+        if not payload and token.count(".") == 2:
+            try:
+                from authentication.utils.jwt import validate_token
+                payload = validate_token(token)
+            except Exception:
+                pass
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

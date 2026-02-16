@@ -81,13 +81,17 @@ app.include_router(public.router, prefix="/api")
 
 def main() -> None:
     """Run the server. Keeps the process running until interrupted."""
+    import os
     import uvicorn
     from config import HOST, PORT
+    # Mock auth stores tokens in memory; use one worker so login and later requests share state
+    use_mock = (os.getenv("AUTH_PROVIDER") or "mock").lower() == "mock"
     uvicorn.run(
         "main:app",
         host=HOST,
         port=PORT,
         reload=DEBUG,
+        workers=1 if use_mock else None,
     )
 
 
