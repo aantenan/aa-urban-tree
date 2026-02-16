@@ -9,6 +9,8 @@ from database.models.contact_information import ContactInformation
 from database.models.site_ownership import SiteOwnership
 from database.models.project_type import ProjectType
 from database.models.project_information import ProjectInformation
+from database.models.financial_information import FinancialInformation
+from database.models.budget_category import BudgetCategory
 
 __all__ = [
     "BaseModel",
@@ -21,4 +23,6 @@ __all__ = [
     "SiteOwnership",
     "ProjectType",
     "ProjectInformation",
+    "FinancialInformation",
+    "BudgetCategory",
 ]
