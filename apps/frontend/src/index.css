@@ -1,17 +1,195 @@
-/* Base and responsive layout */
+/* OneStop-style theme (https://onestop.md.gov/) */
+:root {
+  --header-bg: #003366;
+  --header-text: #fff;
+  --header-link: rgba(255, 255, 255, 0.95);
+  --header-link-hover: #fff;
+  --header-cta-bg: #c41e3a;
+  --header-cta-hover: #a01830;
+  --body-bg: #f5f5f5;
+  --body-text: #1a1a1a;
+  --content-bg: #fff;
+  --link: #0066cc;
+  --link-hover: #004080;
+  --footer-bg: #333;
+  --footer-text: #e0e0e0;
+  --footer-link: #b3d9ff;
+  --border: #ccc;
+  --focus-ring: #0066cc;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.5;
-  color: #1a1a1a;
+  color: var(--body-text);
+  background: var(--body-bg);
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* App layout: header, main, footer */
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: var(--header-bg);
+  color: var(--header-text);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.app-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  min-height: 56px;
+}
+
+.app-header__brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--header-text);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.app-header__brand:hover {
+  color: var(--header-link-hover);
+  text-decoration: none;
+}
+
+.app-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.app-header__link {
+  color: var(--header-link);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.35rem 0;
+}
+
+.app-header__link:hover {
+  color: var(--header-link-hover);
+  text-decoration: underline;
+}
+
+.app-header__link--current {
+  text-decoration: underline;
+  color: var(--header-link-hover);
+}
+
+.app-header__link--cta {
+  background: var(--header-cta-bg);
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.app-header__link--cta:hover {
+  background: var(--header-cta-hover);
+  color: #fff;
+  text-decoration: none;
+}
+
+.app-header__user {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-right: 0.25rem;
+}
+
+.app-header__btn {
+  background: transparent;
+  color: var(--header-link);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.app-header__btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--header-link-hover);
+}
+
+.app-main {
+  flex: 1;
+  padding: 1.5rem 0 2rem;
+}
+
+.app-footer {
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  margin-top: auto;
+  padding: 1rem 0;
+  font-size: 0.875rem;
+}
+
+.app-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.app-footer__nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.app-footer__link {
+  color: var(--footer-link);
+  text-decoration: none;
+}
+
+.app-footer__link:hover {
+  text-decoration: underline;
+}
+
+.app-footer__copy {
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Home page */
+.home-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--body-text);
+}
+.home-lead {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #444;
+  line-height: 1.5;
+}
+.home-link {
+  color: var(--link);
+  text-decoration: none;
+}
+.home-link:hover {
+  text-decoration: underline;
+  color: var(--link-hover);
 }
 
 /* Simple responsive grid helper */
@@ -26,6 +204,15 @@ body {
   .container {
     padding: 0 1.5rem;
   }
+}
+
+/* Content card (white panel on body bg) */
+.content-card {
+  background: var(--content-bg);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* --- Component framework --- */
@@ -56,10 +243,10 @@ body {
   transition: opacity 0.15s;
 }
 .btn:disabled { cursor: not-allowed; opacity: 0.7; }
-.btn--primary { background: #1a1a1a; color: #fff; }
-.btn--primary:hover:not(:disabled) { opacity: 0.9; }
-.btn--secondary { background: #eee; color: #1a1a1a; border-color: #ccc; }
-.btn--secondary:hover:not(:disabled) { background: #e0e0e0; }
+.btn--primary { background: var(--header-bg); color: #fff; }
+.btn--primary:hover:not(:disabled) { opacity: 0.92; }
+.btn--secondary { background: #eee; color: var(--body-text); border-color: var(--border); }
+.btn--secondary:hover:not(:disabled) { background: #e5e5e5; }
 .btn__spinner {
   width: 1em;
   height: 1em;
@@ -83,7 +270,7 @@ body {
   border-radius: 6px;
 }
 .input-group__input--error { border-color: #c00; }
-.input-group__input:focus { outline: 2px solid #1a1a1a; outline-offset: 2px; }
+.input-group__input:focus { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .input-group__hint, .input-group__error { display: block; margin-top: 0.25rem; font-size: 0.875rem; }
 .input-group__error { color: #c00; }
 
@@ -140,17 +327,17 @@ body {
 /* Breadcrumb */
 .breadcrumb__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem; }
 .breadcrumb__item { display: inline-flex; align-items: center; }
-.breadcrumb__link { color: #0066cc; text-decoration: none; }
-.breadcrumb__link:hover { text-decoration: underline; }
-.breadcrumb__current { color: #1a1a1a; }
+.breadcrumb__link { color: var(--link); text-decoration: none; }
+.breadcrumb__link:hover { text-decoration: underline; color: var(--link-hover); }
+.breadcrumb__current { color: var(--body-text); }
 .breadcrumb__sep { color: #888; }
 
 /* Section nav */
 .section-nav__list { list-style: none; margin: 0; padding: 0; }
 .section-nav__item { margin-bottom: 0.5rem; }
 .section-nav__link, .section-nav__label { display: inline-block; }
-.section-nav__link { color: #0066cc; text-decoration: none; }
-.section-nav__link:hover { text-decoration: underline; }
+.section-nav__link { color: var(--link); text-decoration: none; }
+.section-nav__link:hover { text-decoration: underline; color: var(--link-hover); }
 .section-nav__status { color: #0a0; }
 
 /* Password strength */
@@ -164,14 +351,40 @@ body {
 .password-strength__message { font-size: 0.875rem; color: #666; }
 .password-strength__message--ok { color: #0a0; }
 
-/* Session timeout warning */
+/* Session timeout modal (OneStop-style: centered, security copy) */
 .session-timeout-warning {
-  position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
-  max-width: 420px; padding: 1rem; background: #fff; border: 1px solid #333;
-  border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex; align-items: center; justify-content: center;
   z-index: 2000;
+  padding: 1rem;
 }
-.session-timeout-warning__actions { display: flex; gap: 0.75rem; margin-top: 1rem; justify-content: flex-end; }
+.session-timeout-warning__box {
+  max-width: 440px; width: 100%;
+  background: var(--content-bg);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+}
+.session-timeout-warning__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--body-text);
+}
+.session-timeout-warning__desc {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #444;
+}
+.session-timeout-warning__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
 
 /* Contact information section */
 .form-section { margin-bottom: 2rem; }
@@ -202,3 +415,13 @@ body {
 .financial-section__hint { font-size: 0.875rem; color: #555; margin: 0.5rem 0 0; }
 .financial-section__cost-match { margin: 0; }
 .financial-section__row .input-group__input { max-width: 100%; }
+
+/* Dashboard list links */
+.app-main a:not(.btn):not(.app-header__brand):not(.app-header__link) {
+  color: var(--link);
+  text-decoration: none;
+}
+.app-main a:not(.btn):not(.app-header__brand):not(.app-header__link):hover {
+  text-decoration: underline;
+  color: var(--link-hover);
+}

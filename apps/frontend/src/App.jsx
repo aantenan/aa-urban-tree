@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ApplicationProvider } from './context/ApplicationContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { AppLayout } from './components/AppLayout';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
@@ -20,37 +21,39 @@ function App() {
         <BrowserRouter>
           <SessionTimeoutWarning />
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/listing" element={<PublicListingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/application"
-              element={
-                <ProtectedRoute>
-                  <ApplicationFormPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/application/:id"
-              element={
-                <ProtectedRoute>
-                  <ApplicationFormPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/listing" element={<PublicListingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <DashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/application"
+                element={
+                  <ProtectedRoute>
+                    <ApplicationFormPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/application/:id"
+                element={
+                  <ProtectedRoute>
+                    <ApplicationFormPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </ApplicationProvider>

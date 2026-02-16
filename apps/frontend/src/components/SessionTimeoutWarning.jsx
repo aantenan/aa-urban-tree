@@ -75,18 +75,24 @@ export function SessionTimeoutWarning() {
       role="dialog"
       aria-labelledby="session-timeout-title"
       aria-describedby="session-timeout-desc"
+      aria-modal="true"
     >
-      <h2 id="session-timeout-title">Session expiring soon</h2>
-      <p id="session-timeout-desc">
-        Your session will expire in about 5 minutes. Extend your session or sign out.
-      </p>
-      <div className="session-timeout-warning__actions">
-        <Button type="button" variant="secondary" onClick={handleLogout} disabled={extending}>
-          Sign out
-        </Button>
-        <Button type="button" variant="primary" onClick={handleExtend} loading={extending}>
-          Extend session
-        </Button>
+      <div className="session-timeout-warning__box">
+        <h2 id="session-timeout-title" className="session-timeout-warning__title">
+          Your session will time out soon
+        </h2>
+        <p id="session-timeout-desc" className="session-timeout-warning__desc">
+          For security and protection of data, you will be logged out of your session in a few minutes.
+          Click &ldquo;Log out&rdquo; to end your session, or &ldquo;Continue session&rdquo; to extend your session.
+        </p>
+        <div className="session-timeout-warning__actions">
+          <Button type="button" variant="secondary" onClick={handleLogout} disabled={extending}>
+            Log out
+          </Button>
+          <Button type="button" variant="primary" onClick={handleExtend} loading={extending}>
+            Continue session
+          </Button>
+        </div>
       </div>
     </div>
   );
