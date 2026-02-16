@@ -193,3 +193,12 @@ body {
 .project-section__block { max-width: 480px; }
 .project-section__subheading { font-size: 1rem; margin: 0 0 0.75rem; font-weight: 600; }
 .input-group textarea.input-group__input { max-width: 100%; min-height: 120px; }
+
+/* Financial information section */
+.financial-section__grid { display: flex; flex-direction: column; gap: 1.5rem; }
+.financial-section__block { max-width: 480px; }
+.financial-section__block--wide { max-width: 640px; }
+.financial-section__subheading { font-size: 1rem; margin: 0 0 0.75rem; font-weight: 600; }
+.financial-section__hint { font-size: 0.875rem; color: #555; margin: 0.5rem 0 0; }
+.financial-section__cost-match { margin: 0; }
+.financial-section__row .input-group__input { max-width: 100%; }
