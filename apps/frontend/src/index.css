@@ -189,3 +189,7 @@ body {
   .contact-section__row { grid-template-columns: 1fr; }
 }
 .input-group select.input-group__input { max-width: 100%; min-width: 0; }
+.project-section__grid { display: flex; flex-direction: column; gap: 1.5rem; }
+.project-section__block { max-width: 480px; }
+.project-section__subheading { font-size: 1rem; margin: 0 0 0.75rem; font-weight: 600; }
+.input-group textarea.input-group__input { max-width: 100%; min-height: 120px; }

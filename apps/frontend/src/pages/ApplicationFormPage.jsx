@@ -5,6 +5,7 @@ import { apiJson } from '../services/api';
 import { getErrorMessage } from '../utils/errorHandler';
 import { Button } from '../components/ui';
 import { ContactInformationSection } from '../components/ContactInformationSection';
+import { ProjectInformationSection } from '../components/ProjectInformationSection';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export function ApplicationFormPage() {
@@ -84,9 +85,12 @@ export function ApplicationFormPage() {
       {loadingApp && applicationId ? (
         <LoadingSpinner />
       ) : applicationId ? (
-        <ContactInformationSection applicationId={applicationId} />
+        <>
+          <ContactInformationSection applicationId={applicationId} />
+          <ProjectInformationSection applicationId={applicationId} />
+        </>
       ) : (
-        <p>Start a new application to begin the contact information section.</p>
+        <p>Start a new application to begin the contact and project information sections.</p>
       )}
     </div>
   );
