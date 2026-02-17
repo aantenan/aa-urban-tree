@@ -158,17 +158,14 @@ class DocumentManagementService:
             "supportingDocuments": [],
         }
         for doc in docs:
-            thumb_url = None
-            thumb = DocumentThumbnail.select().where(DocumentThumbnail.document_id == doc.id).first()
-            if thumb and self.storage:
-                thumb_url = self.storage.get_url(thumb.thumbnail_path)
+            has_thumb = DocumentThumbnail.select().where(DocumentThumbnail.document_id == doc.id).exists()
             upload_date = doc.upload_date.isoformat() + "Z" if hasattr(doc.upload_date, "isoformat") else str(doc.upload_date)
             item = {
                 "documentId": str(doc.id),
                 "fileName": doc.file_name,
                 "fileSize": doc.file_size,
                 "uploadDate": upload_date,
-                "thumbnailUrl": thumb_url,
+                "hasThumbnail": has_thumb,
             }
             if doc.category == DOCUMENT_CATEGORY_SITE_PLAN:
                 grouped["sitePlan"].append(item)
@@ -177,6 +174,34 @@ class DocumentManagementService:
             else:
                 grouped["supportingDocuments"].append(item)
         return success_response(data={"documents": grouped})
+
+    def download_thumbnail(
+        self, application_id: str, document_id: str, user_id: str
+    ) -> tuple[bytes | None, dict | None]:
+        """Download thumbnail for document. Returns (content, error_response)."""
+        app, err = self._get_app_or_error(application_id, user_id)
+        if err is not None:
+            return None, err
+        try:
+            doc_id = UUID(document_id)
+        except (ValueError, TypeError):
+            return None, error_response("Invalid document id", data={"code": "invalid_id"})
+        try:
+            doc = Document.get((Document.id == doc_id) & (Document.application_id == app.id))
+        except Document.DoesNotExist:
+            return None, error_response("Document not found", data={"code": "not_found"})
+        thumb = DocumentThumbnail.select().where(DocumentThumbnail.document_id == doc.id).first()
+        if not thumb:
+            return None, error_response("Thumbnail not found", data={"code": "not_found"})
+        if not self.storage:
+            return None, error_response("Storage not configured", data={"code": "storage_error"})
+        try:
+            content = self.storage.download(thumb.thumbnail_path)
+            return content, None
+        except FileNotFoundError:
+            return None, error_response("Thumbnail file not found", data={"code": "not_found"})
+        except Exception as e:
+            return None, error_response(f"Download failed: {e}", data={"code": "download_error"})
 
     def download_document(
         self, application_id: str, document_id: str, user_id: str

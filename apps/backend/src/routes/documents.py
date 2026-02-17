@@ -113,6 +113,27 @@ async def upload_document(
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=result)
 
 
+@router.get("/{document_id}/thumbnail")
+async def download_thumbnail(
+    application_id: str,
+    document_id: str,
+    user: dict = Depends(get_current_user),
+    svc: DocumentManagementService = Depends(_document_service),
+):
+    """Download thumbnail image for document (JPG/PNG only)."""
+    user_id, err = _user_id_or_401(user)
+    if err is not None:
+        return err
+    content, err_res = svc.download_thumbnail(application_id, document_id, user_id)
+    if err_res is not None:
+        if (err_res.get("data") or {}).get("code") == "not_found":
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=err_res)
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=err_res)
+    if content is None:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=error_response("Download failed"))
+    return Response(content=content, media_type="image/png")
+
+
 @router.get("/{document_id}")
 async def download_document(
     application_id: str,

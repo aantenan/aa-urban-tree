@@ -7,6 +7,7 @@ import { Button } from '../components/ui';
 import { ContactInformationSection } from '../components/ContactInformationSection';
 import { ProjectInformationSection } from '../components/ProjectInformationSection';
 import { FinancialInformationSection } from '../components/FinancialInformationSection';
+import { DocumentUploadSection } from '../components/DocumentUploadSection';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export function ApplicationFormPage() {
@@ -90,6 +91,10 @@ export function ApplicationFormPage() {
           <ContactInformationSection applicationId={applicationId} />
           <ProjectInformationSection applicationId={applicationId} />
           <FinancialInformationSection applicationId={applicationId} />
+          <DocumentUploadSection
+            applicationId={applicationId}
+            applicationStatus={application?.status}
+          />
         </>
       ) : (
         <p>Start a new application to begin the contact and project information sections.</p>
