@@ -437,6 +437,18 @@ body {
 .section-nav__link { color: var(--link); text-decoration: none; }
 .section-nav__link:hover { text-decoration: underline; color: var(--link-hover); }
 .section-nav__status { color: #0a0; }
+.application-form__nav {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+.application-form__nav .section-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.application-form__nav .section-nav__item { margin-bottom: 0; }
 
 /* Password strength */
 .password-strength { margin-top: 0.25rem; }

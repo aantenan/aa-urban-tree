@@ -161,6 +161,7 @@ export function ProjectInformationSection({ applicationId }) {
 
   return (
     <section
+      id="project-information"
       className="form-section project-section"
       aria-labelledby="project-heading"
       aria-describedby="project-status"

@@ -8,6 +8,7 @@ import { ContactInformationSection } from '../components/ContactInformationSecti
 import { ProjectInformationSection } from '../components/ProjectInformationSection';
 import { FinancialInformationSection } from '../components/FinancialInformationSection';
 import { DocumentUploadSection } from '../components/DocumentUploadSection';
+import { SectionNav } from '../components/SectionNav';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export function ApplicationFormPage() {
@@ -88,6 +89,15 @@ export function ApplicationFormPage() {
         <LoadingSpinner />
       ) : applicationId ? (
         <>
+          <SectionNav
+            sections={[
+              { id: 'contact', label: 'Contact Information', href: '#contact-information' },
+              { id: 'project', label: 'Project Information', href: '#project-information' },
+              { id: 'financial', label: 'Financial Information', href: '#financial-information' },
+              { id: 'documents', label: 'Documents', href: '#documents' },
+            ]}
+            className="application-form__nav"
+          />
           <ContactInformationSection applicationId={applicationId} />
           <ProjectInformationSection applicationId={applicationId} />
           <FinancialInformationSection applicationId={applicationId} />

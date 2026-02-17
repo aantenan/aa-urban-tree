@@ -139,6 +139,7 @@ export function ContactInformationSection({ applicationId }) {
 
   return (
     <section
+      id="contact-information"
       className="form-section contact-section"
       aria-labelledby="contact-heading"
       aria-describedby="contact-status"

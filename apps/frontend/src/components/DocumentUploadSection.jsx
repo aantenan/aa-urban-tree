@@ -194,6 +194,7 @@ export function DocumentUploadSection({ applicationId, applicationStatus = 'draf
 
   return (
     <section
+      id="documents"
       className="form-section documents-section"
       aria-labelledby="documents-heading"
       aria-describedby="documents-status"

@@ -254,6 +254,7 @@ export function FinancialInformationSection({ applicationId }) {
 
   return (
     <section
+      id="financial-information"
       className="form-section financial-section"
       aria-labelledby="financial-heading"
       aria-describedby="financial-status"
