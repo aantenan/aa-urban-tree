@@ -11,6 +11,8 @@ from database.models.project_type import ProjectType
 from database.models.project_information import ProjectInformation
 from database.models.financial_information import FinancialInformation
 from database.models.budget_category import BudgetCategory
+from database.models.document import Document, DOCUMENT_CATEGORIES
+from database.models.document_thumbnail import DocumentThumbnail
 
 __all__ = [
     "BaseModel",
@@ -25,4 +27,7 @@ __all__ = [
     "ProjectInformation",
     "FinancialInformation",
     "BudgetCategory",
+    "Document",
+    "DOCUMENT_CATEGORIES",
+    "DocumentThumbnail",
 ]
