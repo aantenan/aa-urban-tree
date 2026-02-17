@@ -34,3 +34,10 @@ PROGRAM_CONFIG_CACHE_MAX_AGE: int = int(os.getenv("PROGRAM_CONFIG_CACHE_MAX_AGE"
 # Service framework (file upload, malware scan)
 MALWARE_SCAN_DISABLED: bool = os.getenv("MALWARE_SCAN_DISABLED", "true").lower() in ("true", "1", "yes")
 FILE_UPLOAD_MAX_MB: int = int(os.getenv("FILE_UPLOAD_MAX_MB", "10"))
+
+# Document management: storage paths
+# Development: local filesystem; production: S3 or local with configured path
+STORAGE_BACKEND: str = os.getenv("STORAGE_BACKEND", "local").lower()
+LOCAL_STORAGE_PATH: str = os.getenv("LOCAL_STORAGE_PATH", "./uploads")
+# Documents subpath within storage (e.g. applications/{id}/documents/)
+DOCUMENTS_STORAGE_PREFIX: str = os.getenv("DOCUMENTS_STORAGE_PREFIX", "documents")

@@ -7,11 +7,13 @@ dependencies = [
     "fastapi",
     "uvicorn[standard]",
     "python-dotenv",
+    "python-multipart",
     "shared-models",
     "database",
     "authentication",
     "storage",
     "email",
+    "Pillow",
 ]
 
 [project.optional-dependencies]
