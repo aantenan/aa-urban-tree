@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 
 from config import API_V1_PREFIX, CORS_ORIGINS, DEBUG
-from routes import applications, auth, budget_categories, counties, health, project_types, public, site_ownership
+from routes import applications, auth, budget_categories, config as config_routes, counties, health, project_types, public, site_ownership
 from utils.errors import error_handler, validation_exception_handler
 from utils.logging import get_logger, setup_logging
 
@@ -77,6 +77,7 @@ app.include_router(site_ownership.router, prefix=API_V1_PREFIX)
 app.include_router(project_types.router, prefix=API_V1_PREFIX)
 app.include_router(budget_categories.router, prefix=API_V1_PREFIX)
 app.include_router(public.router, prefix="/api")
+app.include_router(config_routes.router, prefix="/api")
 
 
 def main() -> None:

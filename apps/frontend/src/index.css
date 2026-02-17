@@ -570,6 +570,58 @@ body {
   color: var(--md-red);
 }
 
+.listing-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.listing-page__deadline-notice {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.listing-page__return-link {
+  color: var(--link);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.listing-page__return-link:hover {
+  text-decoration: underline;
+  color: var(--link-hover);
+}
+
+/* Grant cycle section */
+.grant-cycle-section { margin-bottom: 1.5rem; }
+.grant-cycle-section h2 { margin: 0 0 1rem; font-size: 1.25rem; }
+.grant-cycle__list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+}
+.grant-cycle__list dt { font-weight: 600; color: #555; }
+.grant-cycle__list dd { margin: 0; }
+
+/* Eligibility details section */
+.eligibility-section { margin-bottom: 1.5rem; }
+.eligibility-section h2 { margin: 0 0 1rem; font-size: 1.25rem; }
+.eligibility-section__block { margin-bottom: 1rem; }
+.eligibility-section__block:last-child { margin-bottom: 0; }
+.eligibility-section__block h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+.eligibility-section__block ul { margin: 0.5rem 0 0; padding-left: 1.25rem; }
+
+/* Print-friendly public listing */
+@media print {
+  .app-header, .app-footer, .listing-page__actions .btn,
+  .listing-page__return-link { display: none !important; }
+  .public-listing-page .content-card { box-shadow: none; border: 1px solid #ccc; }
+  .resource-downloads__link { text-decoration: underline; }
+}
+
 /* Program info block */
 .program-info {
   margin-bottom: 1.5rem;

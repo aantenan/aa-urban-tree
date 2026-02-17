@@ -2,23 +2,34 @@
   "title": "Urban Tree Grant Program",
   "description": "Apply for grants to plant and maintain trees in urban areas. This program supports municipalities and community groups in expanding urban canopy.",
   "eligibility": "Municipalities, non-profits, and community organizations within the service area.",
-  "deadline_info": "Applications are accepted on a rolling basis. Allow 4–6 weeks for review.",
+  "deadline_info": "Applications are accepted during the grant cycle. See dates below.",
   "contact_email": "grants@example.com",
   "contact_phone": null,
+  "program": {
+    "name": "Urban Tree Grant Program",
+    "purpose": "Support urban canopy expansion through tree planting and maintenance grants.",
+    "funding_available": 500000,
+    "contact_email": "grants@example.com",
+    "contact_phone": null
+  },
+  "grant_cycle": {
+    "year": 2025,
+    "application_open": "2025-01-15",
+    "application_deadline": "2025-06-30",
+    "award_notification_date": "2025-08-15"
+  },
+  "eligibility_config": {
+    "applicant_types": ["Municipalities", "Non-profit organizations", "Community organizations"],
+    "project_types": ["Tree planting", "Urban forestry", "Canopy restoration"],
+    "funding_limits": {"minimum": 5000, "maximum": 50000},
+    "cost_match_requirement": 25,
+    "ineligible_activities": ["Private residential only", "Commercial landscaping without public benefit"],
+    "summary": "Municipalities, non-profits, and community organizations within the service area."
+  },
   "resources": [
-    {
-      "id": "application_guidelines",
-      "label": "Application Guidelines",
-      "description": "PDF guide for applicants"
-    },
-    {
-      "id": "faq",
-      "label": "Frequently Asked Questions",
-      "description": "Common questions and answers"
-    }
+    {"id": "application_guidelines", "label": "Application Guidelines", "description": "PDF guide for applicants", "file_type": "PDF"},
+    {"id": "faq", "label": "Frequently Asked Questions", "description": "Common questions and answers", "file_type": "PDF"},
+    {"id": "template_application", "label": "Application Template", "description": "Template for draft applications", "file_type": "PDF"}
   ],
-  "metadata": {
-    "last_updated": null,
-    "version": "1.0"
-  }
+  "metadata": {"last_updated": null, "version": "1.0"}
 }

@@ -9,9 +9,10 @@ export function ResourceDownloader({ resources = [] }) {
 
   const getDownloadUrl = (resource) => {
     if (resource.url) return resource.url;
-    if (resource.storage_key) {
+    const key = resource.storage_key || resource.storageKey;
+    if (key) {
       const base = import.meta.env.VITE_API_BASE_URL || '';
-      return `${base.replace(/\/$/, '')}/api/public/resources/${encodeURIComponent(resource.storage_key)}`;
+      return `${base.replace(/\/$/, '')}/api/public/resources/${encodeURIComponent(key)}`;
     }
     return null;
   };
@@ -26,7 +27,7 @@ export function ResourceDownloader({ resources = [] }) {
             <li key={r.id} className="resource-downloads__item">
               {url ? (
                 <a href={url} download target="_blank" rel="noopener noreferrer" className="resource-downloads__link">
-                  {r.label}
+                  {r.label || r.title}
                 </a>
               ) : (
                 <span>{r.label}</span>
