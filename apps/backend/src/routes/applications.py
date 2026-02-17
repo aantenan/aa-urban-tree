@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from auth_deps import get_current_user
 from database.models import User
+from routes import documents as documents_routes
 from services.application_form_service import ApplicationFormService
 from services.contact_information_service import ContactInformationService
 from services.project_information_service import ProjectInformationService
@@ -14,6 +15,13 @@ from services.financial_information_service import FinancialInformationService
 from utils.responses import error_response
 
 router = APIRouter(prefix="/applications", tags=["applications"])
+
+# Document management: must be included so path /{application_id}/documents is under applications
+router.include_router(
+    documents_routes.router,
+    prefix="/{application_id}/documents",
+    tags=["documents"],
+)
 
 
 class UpdateApplicationBody(BaseModel):
