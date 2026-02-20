@@ -12,6 +12,8 @@ import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ApplicationFormPage } from './pages/ApplicationFormPage';
 import { PublicListingPage } from './pages/PublicListingPage';
+import { BoardReviewQueuePage } from './pages/BoardReviewQueuePage';
+import { BoardApplicationDetailPage } from './pages/BoardApplicationDetailPage';
 import { SessionTimeoutWarning } from './components/SessionTimeoutWarning';
 
 function App() {
@@ -49,6 +51,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ApplicationFormPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/board/review"
+                element={
+                  <ProtectedRoute>
+                    <BoardReviewQueuePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/board/review/:id"
+                element={
+                  <ProtectedRoute>
+                    <BoardApplicationDetailPage />
                   </ProtectedRoute>
                 }
               />

@@ -146,11 +146,34 @@ class DocumentManagementService:
             message="Document uploaded",
         )
 
+    def _get_app_by_id(self, application_id: str) -> tuple[Application | None, dict | None]:
+        """Return (app, None) if found, else (None, error_response). No ownership check."""
+        try:
+            aid = UUID(application_id)
+        except (ValueError, TypeError):
+            return None, error_response("Invalid id", data={"code": "invalid_id"})
+        try:
+            app = Application.get(Application.id == aid)
+            return app, None
+        except Application.DoesNotExist:
+            return None, error_response("Application not found", data={"code": "not_found"})
+
     def list_documents(self, application_id: str, user_id: str) -> dict[str, Any]:
         """List documents grouped by category (camelCase keys for API)."""
         app, err = self._get_app_or_error(application_id, user_id)
         if err is not None:
             return err
+        return self._list_documents_for_app(app)
+
+    def list_documents_for_application(self, application_id: str) -> dict[str, Any]:
+        """List documents for application (no ownership check). For board members after county access verified."""
+        app, err = self._get_app_by_id(application_id)
+        if err is not None:
+            return err
+        return self._list_documents_for_app(app)
+
+    def _list_documents_for_app(self, app: Application) -> dict[str, Any]:
+        """List documents for an Application instance."""
         docs = Document.select().where(Document.application_id == app.id).order_by(Document.upload_date)
         grouped: dict[str, list[dict]] = {
             "sitePlan": [],
@@ -174,6 +197,31 @@ class DocumentManagementService:
             else:
                 grouped["supportingDocuments"].append(item)
         return success_response(data={"documents": grouped})
+
+    def download_document_for_application(
+        self, application_id: str, document_id: str
+    ) -> tuple[bytes | None, str | None, str | None, dict | None]:
+        """Download document (no ownership check). For board members after county access verified."""
+        app, err = self._get_app_by_id(application_id)
+        if err is not None:
+            return None, None, None, err
+        try:
+            doc_id = UUID(document_id)
+        except (ValueError, TypeError):
+            return None, None, None, error_response("Invalid document id", data={"code": "invalid_id"})
+        try:
+            doc = Document.get((Document.id == doc_id) & (Document.application_id == app.id))
+        except Document.DoesNotExist:
+            return None, None, None, error_response("Document not found", data={"code": "not_found"})
+        if not self.storage:
+            return None, None, None, error_response("Storage not configured", data={"code": "storage_error"})
+        try:
+            content = self.storage.download(doc.file_path)
+            return content, doc.file_name, doc.file_type, None
+        except FileNotFoundError:
+            return None, None, None, error_response("File not found", data={"code": "not_found"})
+        except Exception as e:
+            return None, None, None, error_response(f"Download failed: {e}", data={"code": "download_error"})
 
     def download_thumbnail(
         self, application_id: str, document_id: str, user_id: str

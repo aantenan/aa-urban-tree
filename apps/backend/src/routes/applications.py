@@ -9,6 +9,7 @@ from auth_deps import get_current_user
 from database.models import User
 from routes import documents as documents_routes
 from services.application_form_service import ApplicationFormService
+from services.forestry_board_service import ForestryBoardService
 from services.contact_information_service import ContactInformationService
 from services.project_information_service import ProjectInformationService
 from services.financial_information_service import FinancialInformationService
@@ -101,6 +102,10 @@ def _project_information_service() -> ProjectInformationService:
 
 def _financial_information_service() -> FinancialInformationService:
     return FinancialInformationService()
+
+
+def _forestry_board_service() -> ForestryBoardService:
+    return ForestryBoardService()
 
 
 def _user_or_401(user: dict):
@@ -305,5 +310,42 @@ async def put_financial_information(
             return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=result)
         if code == "not_draft":
             return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=result)
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=result)
+    return JSONResponse(content=result)
+
+
+@router.post("/{application_id}/mark-ready-for-board-review")
+async def mark_ready_for_board_review(
+    application_id: str,
+    user: dict = Depends(get_current_user),
+    svc: ForestryBoardService = Depends(_forestry_board_service),
+):
+    """Mark application ready for Forestry Board review."""
+    user_id, err = _user_or_401(user)
+    if err is not None:
+        return err
+    result = svc.mark_ready_for_board_review(application_id, user_id)
+    if not result.get("success"):
+        code = (result.get("data") or {}).get("code")
+        if code == "not_found":
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=result)
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=result)
+    return JSONResponse(content=result)
+
+
+@router.get("/{application_id}/forestry-board-approval-status")
+async def get_forestry_board_approval_status(
+    application_id: str,
+    user: dict = Depends(get_current_user),
+    svc: ForestryBoardService = Depends(_forestry_board_service),
+):
+    """Get Forestry Board approval status for the application."""
+    user_id, err = _user_or_401(user)
+    if err is not None:
+        return err
+    result = svc.get_approval_status(application_id, user_id)
+    if not result.get("success"):
+        if (result.get("data") or {}).get("code") == "not_found":
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=result)
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=result)
     return JSONResponse(content=result)

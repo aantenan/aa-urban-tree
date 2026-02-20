@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiJson } from '../services/api';
@@ -19,6 +19,9 @@ export function ApplicationFormPage() {
   const [loadError, setLoadError] = useState('');
   const [startNewError, setStartNewError] = useState('');
   const [loadingApp, setLoadingApp] = useState(!!applicationId);
+  const [boardStatus, setBoardStatus] = useState(null);
+  const [markReadyError, setMarkReadyError] = useState('');
+  const [markReadyLoading, setMarkReadyLoading] = useState(false);
 
   React.useEffect(() => {
     if (!applicationId) {
@@ -42,6 +45,17 @@ export function ApplicationFormPage() {
       });
   }, [applicationId]);
 
+  const loadBoardStatus = useCallback(() => {
+    if (!applicationId) return;
+    apiJson(`/api/v1/applications/${applicationId}/forestry-board-approval-status`)
+      .then((res) => setBoardStatus(res?.data ?? res))
+      .catch(() => setBoardStatus(null));
+  }, [applicationId]);
+
+  useEffect(() => {
+    if (applicationId) loadBoardStatus();
+  }, [applicationId, loadBoardStatus]);
+
   const handleStartNew = async () => {
     setStartNewError('');
     try {
@@ -50,6 +64,21 @@ export function ApplicationFormPage() {
       if (data?.id) navigate(`/dashboard/application/${data.id}`, { replace: true });
     } catch (err) {
       setStartNewError(getErrorMessage(err));
+    }
+  };
+
+  const handleMarkReadyForBoardReview = async () => {
+    if (!applicationId) return;
+    setMarkReadyError('');
+    setMarkReadyLoading(true);
+    try {
+      await apiJson(`/api/v1/applications/${applicationId}/mark-ready-for-board-review`, { method: 'POST' });
+      loadBoardStatus();
+      setApplication((a) => a ? { ...a, readyForBoardReview: true } : a);
+    } catch (err) {
+      setMarkReadyError(getErrorMessage(err));
+    } finally {
+      setMarkReadyLoading(false);
     }
   };
 
@@ -105,6 +134,44 @@ export function ApplicationFormPage() {
             applicationId={applicationId}
             applicationStatus={application?.status}
           />
+          {application?.status === 'draft' && (
+            <section id="board-review" style={{ marginTop: '2rem', padding: '1rem', border: '1px solid #ccc', borderRadius: 4 }}>
+              <h3>Forestry Board Review</h3>
+              {boardStatus && (
+                <p>
+                  <strong>Status:</strong>{' '}
+                  {boardStatus.status === 'pending' && 'Pending Board Approval'}
+                  {boardStatus.status === 'approved' && 'Approved'}
+                  {boardStatus.status === 'revision_requested' && 'Revision Requested'}
+                  {boardStatus.status === 'not_submitted' && 'Not yet submitted for review'}
+                  {!['pending', 'approved', 'revision_requested', 'not_submitted'].includes(boardStatus.status) && boardStatus.status}
+                  {boardStatus.revisionComments && (
+                    <span style={{ display: 'block', marginTop: '0.5rem' }}>
+                      Board comments: {boardStatus.revisionComments}
+                    </span>
+                  )}
+                </p>
+              )}
+              {(boardStatus?.status === 'not_submitted' || boardStatus?.status === 'revision_requested' || !boardStatus) && (
+                <>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={handleMarkReadyForBoardReview}
+                    loading={markReadyLoading}
+                  >
+                    Mark ready for board review
+                  </Button>
+                  {markReadyError && (
+                    <p role="alert" style={{ color: 'crimson', marginTop: '0.5rem' }}>{markReadyError}</p>
+                  )}
+                  <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                    Notifies the Forestry Board for your county. They will review and either approve or request revisions.
+                  </p>
+                </>
+              )}
+            </section>
+          )}
         </>
       ) : (
         <p>Start a new application to begin the contact and project information sections.</p>

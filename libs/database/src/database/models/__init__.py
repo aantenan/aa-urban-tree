@@ -13,6 +13,9 @@ from database.models.financial_information import FinancialInformation
 from database.models.budget_category import BudgetCategory
 from database.models.document import Document, DOCUMENT_CATEGORIES
 from database.models.document_thumbnail import DocumentThumbnail
+from database.models.forestry_board import ForestryBoard
+from database.models.forestry_board_approval import ForestryBoardApproval
+from database.models.revision_request import RevisionRequest
 
 __all__ = [
     "BaseModel",
@@ -30,4 +33,7 @@ __all__ = [
     "Document",
     "DOCUMENT_CATEGORIES",
     "DocumentThumbnail",
+    "ForestryBoard",
+    "ForestryBoardApproval",
+    "RevisionRequest",
 ]

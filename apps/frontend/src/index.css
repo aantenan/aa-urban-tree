@@ -728,3 +728,79 @@ body {
   font-size: 0.9rem;
   color: #555;
 }
+
+/* Forestry Board Review */
+.board-status {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.board-status--pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.board-status--approved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.board-status--revision_requested {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.board-queue-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.board-queue-table th,
+.board-queue-table td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.board-queue-table th {
+  font-weight: 600;
+}
+
+.board-link {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.board-link:hover {
+  text-decoration: underline;
+}
+
+.board-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.board-revision-history ul,
+.board-sections .board-section {
+  margin: 0.5rem 0;
+}
+
+.breadcrumb {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.breadcrumb a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}

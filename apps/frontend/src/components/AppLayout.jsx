@@ -38,6 +38,12 @@ export function AppLayout() {
                 >
                   Applications
                 </Link>
+                <Link
+                  to="/board/review"
+                  className={`app-header__link ${location.pathname.startsWith('/board') ? 'app-header__link--current' : ''}`}
+                >
+                  Board Review
+                </Link>
                 <span className="app-header__user">{user?.email || 'User'}</span>
                 <button
                   type="button"

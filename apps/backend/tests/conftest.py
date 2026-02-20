@@ -29,6 +29,9 @@ def _get_all_models():
         BudgetCategory,
         PasswordReset,
         LoginAttempt,
+        ForestryBoard,
+        ForestryBoardApproval,
+        RevisionRequest,
     )
     return [
         User,
@@ -42,6 +45,9 @@ def _get_all_models():
         ProjectInformation,
         FinancialInformation,
         BudgetCategory,
+        ForestryBoard,
+        ForestryBoardApproval,
+        RevisionRequest,
     ]
 
 
