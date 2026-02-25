@@ -9,7 +9,8 @@ from fastapi.exceptions import RequestValidationError
 
 from config import API_V1_PREFIX, CORS_ORIGINS, DEBUG
 from middleware.security_headers import SecurityHeadersMiddleware
-from routes import applications, auth, budget_categories, complaints, config as config_routes, counties, forestry_board, form_agent, health, preferences, project_types, public, site_ownership
+from observability.middleware import MetricsMiddleware
+from routes import applications, auth, budget_categories, complaints, config as config_routes, counties, forestry_board, form_agent, health, observability, preferences, project_types, public, site_ownership, whatsapp
 from utils.errors import error_handler, validation_exception_handler
 from utils.logging import get_logger, setup_logging
 
@@ -59,6 +60,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_middleware(MetricsMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
     CORSMiddleware,
@@ -85,6 +87,8 @@ app.include_router(complaints.router, prefix=API_V1_PREFIX)
 app.include_router(preferences.router, prefix=API_V1_PREFIX)
 app.include_router(form_agent.router, prefix=API_V1_PREFIX)
 app.include_router(public.router, prefix="/api")
+app.include_router(whatsapp.router, prefix="/api")
+app.include_router(observability.router, prefix="/api")
 app.include_router(config_routes.router, prefix="/api")
 
 

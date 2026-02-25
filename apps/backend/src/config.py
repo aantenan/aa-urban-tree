@@ -48,3 +48,14 @@ ADMIN_EMAILS: set[str] = set(
     for e in os.getenv("ADMIN_EMAILS", "admin@example.com").split(",")
     if e.strip()
 )
+
+# WhatsApp Business API (optional)
+WHATSAPP_PHONE_NUMBER_ID: str = os.getenv("WHATSAPP_PHONE_NUMBER_ID", "")
+WHATSAPP_ACCESS_TOKEN: str = os.getenv("WHATSAPP_ACCESS_TOKEN", "")
+WHATSAPP_VERIFY_TOKEN: str = os.getenv("WHATSAPP_VERIFY_TOKEN", "")
+WHATSAPP_WEBHOOK_PATH: str = os.getenv("WHATSAPP_WEBHOOK_PATH", "/api/webhooks/whatsapp")
+
+# Observability
+METRICS_ENABLED: bool = os.getenv("METRICS_ENABLED", "true").lower() in ("true", "1", "yes")
+OTEL_EXPORTER_OTLP_ENDPOINT: str | None = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT") or None
+PHOENIX_COLLECTOR_ENDPOINT: str | None = os.getenv("PHOENIX_COLLECTOR_ENDPOINT") or None
