@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiJson } from '../services/api';
+import { getGuidance, extractFromText } from '../services/formAgentApi';
 import { getErrorMessage } from '../utils/errorHandler';
 import { validateContactForm, CONTACT_INITIAL } from '../utils/contactValidation';
 import { useAutoSave } from '../hooks/useAutoSave';
@@ -34,6 +35,11 @@ export function ContactInformationSection({ applicationId }) {
   const [sectionComplete, setSectionComplete] = useState(false);
   const [backendErrors, setBackendErrors] = useState(null);
   const [touched, setTouched] = useState({});
+  const [assistantOpen, setAssistantOpen] = useState(false);
+  const [guidance, setGuidance] = useState(null);
+  const [pasteText, setPasteText] = useState('');
+  const [extractLoading, setExtractLoading] = useState(false);
+  const [extractError, setExtractError] = useState('');
 
   // Fetch counties once; use Maryland fallback if API fails or returns empty
   useEffect(() => {
@@ -116,6 +122,28 @@ export function ContactInformationSection({ applicationId }) {
     enabled: !!applicationId && !contactLoading,
   });
 
+  useEffect(() => {
+    if (!applicationId || contactLoading) return;
+    getGuidance('contact_information', formValues)
+      .then((d) => setGuidance(d))
+      .catch(() => setGuidance(null));
+  }, [applicationId, contactLoading, formValues]);
+
+  const handlePasteToFill = () => {
+    if (!pasteText.trim()) return;
+    setExtractError('');
+    setExtractLoading(true);
+    extractFromText('contact_information', pasteText)
+      .then((d) => {
+        if (d?.extracted && Object.keys(d.extracted).length > 0) {
+          setFormValues((prev) => ({ ...prev, ...d.extracted }));
+          setPasteText('');
+        }
+      })
+      .catch((err) => setExtractError(getErrorMessage(err)))
+      .finally(() => setExtractLoading(false));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
@@ -186,6 +214,38 @@ export function ContactInformationSection({ applicationId }) {
           {apiError}
         </p>
       )}
+
+      <div style={{ marginBottom: '1rem', border: '1px solid #ddd', borderRadius: 8, overflow: 'hidden' }}>
+        <button
+          type="button"
+          onClick={() => setAssistantOpen((o) => !o)}
+          style={{ width: '100%', padding: '0.5rem 1rem', textAlign: 'left', background: '#f5f5f5', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+        >
+          {assistantOpen ? '▼' : '▶'} Form assistant
+        </button>
+        {assistantOpen && (
+          <div style={{ padding: '1rem', background: '#fafafa' }}>
+            {guidance?.suggested_next_field && (
+              <p style={{ margin: '0 0 0.5rem' }}>
+                <strong>Suggested next:</strong> {guidance.suggested_next_field.replace(/_/g, ' ')}
+                {guidance.tip && <span style={{ display: 'block', color: '#555', fontSize: '0.9rem', marginTop: '0.25rem' }}>{guidance.tip}</span>}
+              </p>
+            )}
+            <p style={{ margin: '0 0 0.5rem', fontSize: '0.9rem' }}>Paste text below (e.g. from an email or document) to auto-fill fields:</p>
+            <textarea
+              value={pasteText}
+              onChange={(e) => setPasteText(e.target.value)}
+              placeholder="Organization: Acme Inc&#10;Address: 123 Main St&#10;City: Baltimore&#10;..."
+              rows={3}
+              style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', boxSizing: 'border-box' }}
+            />
+            <Button type="button" variant="secondary" onClick={handlePasteToFill} disabled={extractLoading}>
+              {extractLoading ? 'Extracting…' : 'Apply to form'}
+            </Button>
+            {extractError && <p role="alert" style={{ color: 'crimson', marginTop: '0.5rem', fontSize: '0.9rem' }}>{extractError}</p>}
+          </div>
+        )}
+      </div>
 
       <div className="contact-section__grid">
         <div className="contact-section__block">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiJson } from '../services/api';
+import { recordInteraction, getRecommendations } from '../services/preferenceApi';
 import { getErrorMessage } from '../utils/errorHandler';
 import { Button } from '../components/ui';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -9,8 +10,21 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 export function DashboardPage() {
   const { user } = useAuth();
   const [applications, setApplications] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    recordInteraction({ interaction_type: 'page_view', target_id: '/dashboard' }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    getRecommendations(5).then((d) => {
+      if (!cancelled && d?.recommendations) setRecommendations(d.recommendations);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -62,6 +76,19 @@ export function DashboardPage() {
           </>
         )}
       </section>
+      {recommendations.length > 0 && (
+        <section style={{ marginTop: '1.5rem', padding: '1rem', background: '#f8f9fa', borderRadius: 8 }}>
+          <h3 style={{ margin: '0 0 0.5rem' }}>Recommended for you</h3>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {recommendations.map((r, i) => (
+              <li key={i} style={{ marginBottom: '0.5rem' }}>
+                <Link to={r.link || '#'}>{r.title}</Link>
+                {r.reason && <span style={{ color: '#555', fontSize: '0.9rem', display: 'block' }}>{r.reason}</span>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       </div>
     </div>
   );

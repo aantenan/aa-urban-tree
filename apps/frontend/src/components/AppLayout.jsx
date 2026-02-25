@@ -30,6 +30,12 @@ export function AppLayout() {
             >
               Program &amp; Resources
             </Link>
+            <Link
+              to="/data"
+              className={`app-header__link ${location.pathname === '/data' ? 'app-header__link--current' : ''}`}
+            >
+              Public data
+            </Link>
             {isAuthenticated ? (
               <>
                 <Link
@@ -37,6 +43,18 @@ export function AppLayout() {
                   className={`app-header__link ${location.pathname.startsWith('/dashboard') ? 'app-header__link--current' : ''}`}
                 >
                   Applications
+                </Link>
+                <Link
+                  to="/complaints"
+                  className={`app-header__link ${location.pathname.startsWith('/complaints') && !location.pathname.startsWith('/admin') ? 'app-header__link--current' : ''}`}
+                >
+                  Complaints
+                </Link>
+                <Link
+                  to="/admin/complaints"
+                  className={`app-header__link ${location.pathname.startsWith('/admin/complaints') ? 'app-header__link--current' : ''}`}
+                >
+                  Admin complaints
                 </Link>
                 <Link
                   to="/board/review"

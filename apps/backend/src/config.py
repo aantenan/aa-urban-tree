@@ -41,3 +41,10 @@ STORAGE_BACKEND: str = os.getenv("STORAGE_BACKEND", "local").lower()
 LOCAL_STORAGE_PATH: str = os.getenv("LOCAL_STORAGE_PATH", "./uploads")
 # Documents subpath within storage (e.g. applications/{id}/documents/)
 DOCUMENTS_STORAGE_PREFIX: str = os.getenv("DOCUMENTS_STORAGE_PREFIX", "documents")
+
+# Complaint admin: comma-separated emails that can manage complaints
+ADMIN_EMAILS: set[str] = set(
+    e.strip().lower()
+    for e in os.getenv("ADMIN_EMAILS", "admin@example.com").split(",")
+    if e.strip()
+)

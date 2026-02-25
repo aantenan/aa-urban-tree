@@ -46,3 +46,28 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     return payload
+
+
+def get_current_user_optional(
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security)],
+) -> dict[str, Any] | None:
+    """Return user payload if valid Bearer token present; otherwise None (for optional-auth routes)."""
+    if not credentials or credentials.credentials is None:
+        return None
+    token = credentials.credentials
+    use_jwt = (os.getenv("AUTH_PROVIDER") or "mock").lower() == "jwt"
+    if use_jwt:
+        try:
+            from authentication.utils.jwt import validate_token
+            return validate_token(token)
+        except Exception:
+            return None
+    from authentication import get_provider
+    payload = get_provider().verify(token)
+    if not payload and token.count(".") == 2:
+        try:
+            from authentication.utils.jwt import validate_token
+            return validate_token(token)
+        except Exception:
+            pass
+    return payload

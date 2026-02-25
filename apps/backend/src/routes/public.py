@@ -1,11 +1,17 @@
-"""Public API routes: program configuration (no authentication)."""
+"""Public API routes: program configuration and public data query (no authentication)."""
 from fastapi import APIRouter, HTTPException, Response
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 from config import PROGRAM_CONFIG_CACHE_MAX_AGE
 from services.program_config import get_cached_program_config
+from services.public_data_query_service import PublicDataQueryService
 
 router = APIRouter(prefix="/public", tags=["public"])
+
+
+class DataQueryBody(BaseModel):
+    query: str
 
 
 @router.get("/config")
@@ -18,6 +24,27 @@ def get_program_config(response: Response) -> JSONResponse:
     response.headers["Cache-Control"] = f"public, max-age={PROGRAM_CONFIG_CACHE_MAX_AGE}"
     response.headers["ETag"] = etag
     return JSONResponse(content=config.model_dump(mode="json"))
+
+
+def _public_data_service() -> PublicDataQueryService:
+    return PublicDataQueryService()
+
+
+@router.get("/data/suggestions")
+def get_data_query_suggestions() -> JSONResponse:
+    """Return example natural language questions for public data (no auth)."""
+    svc = _public_data_service()
+    return JSONResponse(content=svc.list_suggestions())
+
+
+@router.post("/data/query")
+def post_data_query(body: DataQueryBody) -> JSONResponse:
+    """Run a natural language public data query (read-only, no auth)."""
+    svc = _public_data_service()
+    result = svc.query(body.query)
+    if not result.get("success"):
+        return JSONResponse(status_code=400, content=result)
+    return JSONResponse(content=result)
 
 
 @router.get("/resources/{key:path}")

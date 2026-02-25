@@ -16,6 +16,9 @@ from database.models.document_thumbnail import DocumentThumbnail
 from database.models.forestry_board import ForestryBoard
 from database.models.forestry_board_approval import ForestryBoardApproval
 from database.models.revision_request import RevisionRequest
+from database.models.complaint import Complaint, COMPLAINT_CATEGORIES, COMPLAINT_STATUSES
+from database.models.user_interaction import UserInteraction
+from database.models.audit_log import AuditLog
 
 __all__ = [
     "BaseModel",
@@ -36,4 +39,9 @@ __all__ = [
     "ForestryBoard",
     "ForestryBoardApproval",
     "RevisionRequest",
+    "Complaint",
+    "COMPLAINT_CATEGORIES",
+    "COMPLAINT_STATUSES",
+    "UserInteraction",
+    "AuditLog",
 ]

@@ -14,6 +14,11 @@ import { ApplicationFormPage } from './pages/ApplicationFormPage';
 import { PublicListingPage } from './pages/PublicListingPage';
 import { BoardReviewQueuePage } from './pages/BoardReviewQueuePage';
 import { BoardApplicationDetailPage } from './pages/BoardApplicationDetailPage';
+import { ComplaintsPage } from './pages/ComplaintsPage';
+import { FileComplaintPage } from './pages/FileComplaintPage';
+import { ComplaintDetailPage } from './pages/ComplaintDetailPage';
+import { AdminComplaintsPage } from './pages/AdminComplaintsPage';
+import { PublicDataQueryPage } from './pages/PublicDataQueryPage';
 import { SessionTimeoutWarning } from './components/SessionTimeoutWarning';
 
 function App() {
@@ -26,6 +31,7 @@ function App() {
             <Route element={<AppLayout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/listing" element={<PublicListingPage />} />
+              <Route path="/data" element={<PublicDataQueryPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -67,6 +73,34 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <BoardApplicationDetailPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/complaints"
+                element={
+                  <ProtectedRoute>
+                    <ComplaintsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/complaints/file"
+                element={<FileComplaintPage />}
+              />
+              <Route
+                path="/complaints/:id"
+                element={
+                  <ProtectedRoute>
+                    <ComplaintDetailPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/complaints"
+                element={
+                  <ProtectedRoute>
+                    <AdminComplaintsPage />
                   </ProtectedRoute>
                 }
               />

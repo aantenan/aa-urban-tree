@@ -66,6 +66,11 @@ def login(body: LoginRequest, request: Request) -> AuthResponse:
         svc = _auth_service()
         try:
             out = svc.login(body.email, body.password, ip_address)
+            try:
+                from services.audit_service import record_audit
+                record_audit("login", user_id=out["user"].get("id"), request=request)
+            except Exception:
+                pass
             return AuthResponse(token=out["token"], user=out["user"])
         except Exception as e:
             from authentication.errors import InvalidCredentialsError, AccountLockedError
@@ -79,6 +84,11 @@ def login(body: LoginRequest, request: Request) -> AuthResponse:
     result = provider.authenticate(body.email, body.password)
     if result is None:
         raise HTTPException(status_code=401, detail="Invalid email or password")
+    try:
+        from services.audit_service import record_audit
+        record_audit("login", user_id=result.get("user", {}).get("id"), request=request)
+    except Exception:
+        pass
     return AuthResponse(token=result["token"], user=result["user"])
 
 
